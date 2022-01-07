@@ -1,0 +1,608 @@
+{% extends "index.html" %}
+
+{% block nav %}
+<nav>
+    <ul>
+        <li class="_left"><a  href={{ url_for('index') }}>主要指标</a></li>
+        <li class=" _left"><a  href={{ url_for("finance") }}>财务情况</a></li>
+
+    </ul>
+    <ul><li class="index_middle"><h1 style="font-size:24px;text-align:right">2021年SWIFT银行财务数据可视化</h1></li></ul>
+    <ul>
+        <li class="nav_active _right"><a href={{ url_for("predict") }}>预测分析</a></li>
+        <li class="_right"><a href={{ url_for("business") }}>业务情况</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block subnav %}
+{% endblock %}
+
+{% block main %}
+
+    <script>
+    $(document).ready(function () {
+        $.get('/Predict/predict1',function (html) {
+            $(".predict_1").html(html);});
+        //$.get('/Predict/liquidfill',function (html) {
+          //  $(".predict_3").html(html);});
+        $("#reset").click(function () {
+            $.get('/Predict/predict1',function (html) {
+                $(".predict_1").html(html);});
+        });
+    });
+    function tijiao() {
+        var m = $("#adj_month option:selected").val();
+        var num = $("#adj_loan").val();
+        $.ajax({
+        //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "html",//预期服务器返回的数据类型
+            url: "/Predict/predict1" ,//url
+            data: {
+                "month":m,
+                "loan":num
+            },
+            success: function (html) {
+                $(".predict_1").html(html)//打印服务端返回的数据(调试用)
+                if (result.resultCode == 200) {
+                    alert("SUCCESS");
+                };
+            },
+            error : function() {
+                alert("Failed");
+            }
+        });
+    }
+
+</script>
+<div class="mainbox">
+    {#            <div class="charttitle">2021年贷款预测分析</div>#}
+    <div class="column_pred">
+        <div class="predict_1">
+
+        </div>
+        <div class="adj_pred">
+            <form id="adjust" method="post">
+                <label for="month">调整月份</label>
+                <select name="month" id="adj_month">
+{#                    {% set count=namespace(value=0) %}#}
+                    {% for row in form4 %}
+                        <option value={{ row.month }}>{{ row.month }}月份</option>
+{#                        {% set count.value=count.value + 1 %}#}
+                    {% endfor %}
+                </select>
+                <label for="loan">调整贷款</label>
+                <input type="text" name="loan" id="adj_loan" placeholder="万元">
+                <input type="button" value="调整" onclick="tijiao()">
+                <input type="button" value="重置" id="reset">
+            </form>
+        </div>
+    </div>
+    <div class="column">
+        <div class="panel_text2">
+            <div class="no-top">
+                <ul>
+                    <li>完成目标的可能性</li>
+                    <li class="result">低</li>
+                </ul>
+            </div>
+
+        </div>
+            {#                <div class="charttitle">贷款同比增长率</div>#}
+        <div class="cplt">
+            <div class="predict_2" id="predict2"></div>
+        </div>
+{#            <div class="panelfoot"></div>#}
+        <div class="pred_diff">
+            {#            <div class="div_table_box " >#}
+{#            <div class="predict_3" id="predict3"></div>#}
+            <div class="predict_3" >
+                <div id="predict3"></div>
+            </div>
+            <div class="div_any_child">
+                <div class="div_any_title">未来月份与预期差额 </div>
+                <div class="table_p">
+                    <table>
+                        <thead><tr><th>月份</th><th>差额(万元)</th></tr></thead>
+                        <tbody>
+                        <tr><td>7月</td><td>+76.7</td></tr>
+                        <tr><td>8月</td><td>+84.0</td></tr>
+                        <tr><td>9月</td><td>+112.0</td></tr>
+                        <tr><td>10月</td><td>+83.0</td></tr>
+                        <tr><td>11月</td><td>+62.2</td></tr>
+                        <tr><td>12月</td><td>+78.8</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+</div>
+</div>
+
+
+<script>
+
+    //  -----------
+    $(function (){
+        var myChart2 = echarts.init(document.getElementById('predict2'));
+        option = {
+            title : {
+                text: '实际贷款完成情况(%)',
+                left: 'center',
+                textStyle: {fontsize:18, color:'#ffffff'}
+            },
+            backgroundColor: "transparent",
+            //浮动框
+            //tooltip: {},
+            //图例
+            //legend: {right: '12%', bottom: '4%', textStyle: {color: "white", fontSize: '13',},
+            //    itemGap: 20,
+            //    itemWidth: 10,
+            //    itemHeight: 10,
+            //    icon: 'circle',
+            //    data: [ 'data'],
+            //},
+            grid: {
+                left: '8%',
+                top: '10%',
+                bottom: '14%',
+                width: '86%',
+            },
+            visualMap: [
+                {
+                    type: 'piecewise',
+                    show: false,
+                    pieces: [
+                        {
+                            gt: -15,
+                            lte: 0,
+                            color: '#ff7c09',
+                        },
+                        {
+                            gte: 0,
+                            color: '#01F6F9',
+                        },
+                    ],
+                    seriesName: '增长率',
+                    seriesIndex: 0,
+                },
+                {
+                    type: 'piecewise',
+                    show: false,
+                    pieces: [
+                        {
+                            gt: -15,
+                            lte: 0,
+                            color: '#ff7c09',
+                        },
+                        {
+                            gte: 0,
+                            color: '#01F6F9',
+                        },
+                    ],
+                    seriesName: 'CO2',
+                    seriesIndex: 1,
+                },
+            ],
+            //x轴
+            xAxis: {
+                axisLine: {
+                    lineStyle: {
+                        color: 'white',
+                    },
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#FFF',
+                        fontSize: 12,
+                    },
+                },
+                //刻度线
+                axisTick: {
+                    show: false,
+                },
+                //坐标轴显示值
+                data: ['1月', '2月', '3月', '4月', '5月', '6月'],
+            },
+            //y轴
+            yAxis: {
+                min: -20,
+                max: 20,
+                axisLabel: {
+                    //  改变y轴字体颜色和大小
+                    //formatter: '{value} m³ ', //  给y轴添加单位
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 12,
+                    },
+                },
+                //坐标轴线
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: 'white',
+                    },
+                },
+                //刻度线
+                axisTick: {
+                    show: false,
+                },
+                //在grid区域中的分隔线
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#132987',
+                    },
+                },
+            },
+
+            //
+            series: [
+                {
+                    name: 'data',
+                    type: 'line',
+                    symbolSize: [0, 0],
+                    //data: [3.32,7.2,-2,1.73,-5.3,2.21,-13.32,-5.2,2.0,18.73,-4.43,-7.21],
+                    data: {{ form3.data }},
+            itemStyle: {
+            normal: {
+                label: {
+                    show: true,		//开启显示
+                        position: 'top',	//在上方显示
+                        textStyle: {	    //数值样式
+                        color: 'white',
+                            fontSize: 13
+                    },
+                    formatter: function(v) {
+                        var val = v.data;
+                        return val +'%';
+
+                    },
+                },
+
+            },
+
+        }
+    },
+        {
+            //水波纹点
+            name: 'data',
+                type: 'effectScatter',
+            symbolSize: [5, 5],
+            rippleEffect: {
+            period: 1,
+                scale: 5,
+                brushType: 'fill',
+        },
+            itemStyle: {
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
+                    {
+                        offset: 0,
+                        // color: '#69dbf7',
+                        color: '#01F6F9',
+                    },
+                    {
+                        offset: 1,
+                        // color: '#aefbc3',
+                        color: '#01F6F9',
+                    },
+                ]),
+            },
+            markLine: {
+                symbol: 'none',
+                    label: {
+                    normal: {
+                        show: false,
+                    },
+                },
+                lineStyle: {
+                    type: 'solid',
+                        color: '#ff7c09',
+                        width: 2,
+                },
+                data: [
+                    {
+                        yAxis: 0,
+                    },
+                ],
+            },
+            data: {{ form3.data }}
+        },
+    ],
+    };
+        myChart2.setOption(option);
+        tools.loopShowTooltip(myChart2, option, {
+            loopSeries: true
+        });
+    });
+
+ {#$(function () {#}
+ {#    var myChart3 = echarts.init(document.getElementById('predict3'));#}
+ {#    var option = {#}
+ {#        title: {#}
+ {#            text: '实际贷款完成率',#}
+ {#            left: 'center',#}
+ {#            textStyle: {fontsize: 14, color: '#ffffff'}#}
+ {#        },#}
+ {#        series: [{#}
+ {#            type: 'liquidFill',#}
+ {#            radius: '75%',#}
+ {#            center: ['50%', '60%'],#}
+ {#            itemStyle: {#}
+ {#                normal: {#}
+ {#                    color: '#43b3ef',#}
+ {#                    opacity: 0.8,#}
+ {#                    shadowColor: '#43b3ef',#}
+ {#                    shadowBlur: 20#}
+ {#                }#}
+ {#            },#}
+ {#            backgroundStyle: {#}
+ {#                shadowColor: 'rgba(255, 255, 255, 0.5)',#}
+ {#                shadowBlur: 20#}
+ {#            },#}
+ {#            data: [{#}
+ {#                value: 0.78,#}
+ {#                waveLength: 180#}
+ {#            }],#}
+ {#            label: {#}
+ {#                fontSize: 18,#}
+ {#                color: '#43b3ef',#}
+ {#                insideColor: '#ffffff'#}
+ {#            },#}
+ {#            outline: {#}
+ {#                show: false#}
+ {#            }#}
+ {#        }]#}
+ {#    };#}
+ {##}
+ {#    myChart3.setOption(option);#}
+ {# });#}
+$(function () {
+     var myChart3 = echarts.init(document.getElementById('predict3'));
+     let angle = 0;//角度，用来做简单的动画效果的
+     let value = 55.33;
+     option = {
+         //backgroundColor:"#061740",
+        title: {
+            text: '{a|'+ value +'}{c|%}',
+            x: 'center',
+            y: 'center',
+            textStyle: {
+                rich:{
+                a: {
+                    fontSize: 20,
+                    color: '#29EEF3'
+                },
+
+                c: {
+                    fontSize: 18,
+                    color: '#ffffff',
+                    // padding: [5,0]
+                }
+            }
+        }
+    },
+
+    series: [ {
+            name: "ring5",
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                return {
+                    type: 'arc',
+                    shape: {
+                        cx: api.getWidth() / 2,
+                        cy: api.getHeight() / 2,
+                        r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.90,
+                        startAngle: (0+angle) * Math.PI / 180,
+                        endAngle: (90+angle) * Math.PI / 180
+                    },
+                    style: {
+                        stroke: "#0CD3DB",
+                        fill: "transparent",
+                        lineWidth: 1.5
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: "ring5",
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                return {
+                    type: 'arc',
+                    shape: {
+                        cx: api.getWidth() / 2,
+                        cy: api.getHeight() / 2,
+                        r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.90,
+                        startAngle: (180+angle) * Math.PI / 180,
+                        endAngle: (270+angle) * Math.PI / 180
+                    },
+                    style: {
+                        stroke: "#0CD3DB",
+                        fill: "transparent",
+                        lineWidth: 1.5
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: "ring5",
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                return {
+                    type: 'arc',
+                    shape: {
+                        cx: api.getWidth() / 2,
+                        cy: api.getHeight() / 2,
+                        r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.98,
+                        startAngle: (270+-angle) * Math.PI / 180,
+                        endAngle: (40+-angle) * Math.PI / 180
+                    },
+                    style: {
+                        stroke: "#0CD3DB",
+                        fill: "transparent",
+                        lineWidth: 1.5
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: "ring5",
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                return {
+                    type: 'arc',
+                    shape: {
+                        cx: api.getWidth() / 2,
+                        cy: api.getHeight() / 2,
+                        r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.98,
+                        startAngle: (90+-angle) * Math.PI / 180,
+                        endAngle: (220+-angle) * Math.PI / 180
+                    },
+                    style: {
+                        stroke: "#0CD3DB",
+                        fill: "transparent",
+                        lineWidth: 1.5
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: "ring5",
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                let x0 = api.getWidth() / 2;
+                let y0 = api.getHeight() / 2;
+                let r = Math.min(api.getWidth(), api.getHeight()) / 2 * 0.98;
+                let point = getCirlPoint(x0, y0, r, (90+-angle))
+                return {
+                    type: 'circle',
+                    shape: {
+                        cx: point.x,
+                        cy: point.y,
+                        r: 4
+                    },
+                    style: {
+                        stroke: "#0CD3DB",//粉
+                        fill: "#0CD3DB"
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: "ring5",  //绿点
+            type: 'custom',
+            coordinateSystem: "none",
+            renderItem: function(params, api) {
+                let x0 = api.getWidth() / 2;
+                let y0 = api.getHeight() / 2;
+                let r = Math.min(api.getWidth(), api.getHeight()) / 2 * 0.98;
+                let point = getCirlPoint(x0, y0, r, (270+-angle))
+                return {
+                    type: 'circle',
+                    shape: {
+                        cx: point.x,
+                        cy: point.y,
+                        r: 4
+                    },
+                    style: {
+                        stroke: "#0CD3DB",      //绿
+                        fill: "#0CD3DB"
+                    },
+                    silent: true
+                };
+            },
+            data: [0]
+        }, {
+            name: '贷款完成率',
+            type: 'pie',
+            radius: ['80%', '70%'],
+            silent: true,
+            clockwise: true,
+            startAngle: 90,
+            z: 0,
+            zlevel: 0,
+            label: {
+                normal: {
+                    position: "center",
+                }
+            },
+            data: [{
+                    value: value,
+                    name: "",
+                    itemStyle: {
+                        normal: {
+                            color: { // 完成的圆环的颜色
+                                colorStops: [{
+                                    offset: 0,
+                                    color: '#4FADFD' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#28E8FA' // 100% 处的颜色
+                                }]
+                            },
+                        }
+                    }
+                },
+                {
+                    value: 100-value,
+                    name: "",
+                    label: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: "#173164"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+};
+
+//获取圆上面某点的坐标(x0,y0表示坐标，r半径，angle角度)
+function getCirlPoint(x0, y0, r, angle) {
+    let x1 = x0 + r * Math.cos(angle * Math.PI / 180)
+    let y1 = y0 + r * Math.sin(angle * Math.PI / 180)
+    return {
+        x: x1,
+        y: y1
+    }
+};
+
+function draw(){
+    angle = angle+3
+    myChart3.setOption(option, true)
+   //window.requestAnimationFrame(draw);
+};
+
+setInterval(function() {
+    //用setInterval做动画感觉有问题
+    draw()
+}, 100);
+     //myChart3.setOption(option);
+ });
+
+</script>
+{#<script type="text/javascript" src="../static/js/echarts-3.7.0.js"></script>#}
+{#<script type="text/javascript" src="../static/js/echarts-liquidfill.js"></script>#}
+
+
+{% endblock %}

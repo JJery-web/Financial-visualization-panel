@@ -1,0 +1,36 @@
+{% for info in form %}
+    <div class="info1">
+        <ul>
+            <li>{{ info.age|int }}%</li>
+            <li>35岁以下客户占比</li>
+        </ul>
+    </div>
+    <div class="info2">
+        <ul>
+            <li>{{ info.degree|int }}%</li>
+            <li>大学及以上客户占比</li>
+        </ul>
+    </div>
+    <div class="info3">
+        <ul>
+            <li>￥{{ info.trd }}</li>
+            <li>平均每单交易额</li>
+        </ul>
+    </div>
+    <div class="info4">
+        <ul>
+            <li>{{ info.overdue|round(1) }}%</li>
+            <li>近半年逾期率</li>
+        </ul>
+    </div>
+{% endfor %}
+<div class="userpic">
+    <div class="pic1"><img src="../static/images/pic1.png"></div>
+    <div class="pic2"><img src="../static/images/pic2.png"></div>
+    {#            <div class="pic3"><img src="../static/images/pic3.png"></div>#}
+    <div class="pic3"></div>
+</div>
+
+<script>
+
+</script>

@@ -1,0 +1,164 @@
+<div class="panel">
+    <div class="charttitle">uuuuuu</div>
+    <div class="chart" id="echart3"></div>
+    <div class="panelfoot"></div>
+</div>
+<div class="panel">
+    <div class="charttitle">AUM</div>
+    <div class="chart" id="echart4"></div>
+    <div class="panelfoot"></div>
+</div>
+
+<script>
+    $(function echart3(){
+   var myChart3 = echarts.init(document.getElementById('echart3'));
+  option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        color: '#fff6f6'
+      }
+    }
+  },
+  legend: {
+    textStyle: {fontsize:18, color:'#fff6f6'},
+    data: ['财务-资产规模' , '增速']
+  },
+  xAxis: [
+    {
+      type: 'category',
+      data: ['2016', '2017', '2018', '2019', '2020'],
+      axisPointer: {
+        type: 'shadow'
+      },
+      axisLabel:{
+        textStyle: {fontsize:18, color:'#fff6f6'}
+      }
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      name: '财务-资产规模',
+      min: 60,
+      max: 100,
+      interval: 10,
+      axisLabel: {
+        textStyle: {fontsize:18, color:'#fff6f6'},
+        formatter: '￥{value}万'
+      }
+    },
+    {
+      type: 'value',
+      name: '增速',
+      min: 0,
+      max: 20,
+      interval: 2,
+      axisLabel: {
+        textStyle: {fontsize:5, color:'#fff6f6'},
+        formatter: '{value}%'
+      }
+    }
+  ],
+  series: [
+      {
+          name: '财务-资产规模',
+          color: '#ff8302',
+          type: 'bar',
+          // data: [
+          // 60.67,67.41,69.50,74.73,78.66
+          // ]
+          data: {{form.echart3_1.xAxis | safe}}
+    },
+    {
+      name: '增速',
+      color: '#F6E331',
+      type: 'line',
+      yAxisIndex: 1,
+      // data: [0, 11.11,3.09,7.53,5.26]
+        data: {{form.echart3_1.xAxis|safe}}
+    }
+
+]
+  };
+  myChart3.setOption(option);
+
+  });
+    </script>
+
+<script>
+    $(function echart4(){
+  var myChart4 = echarts.init(document.getElementById('echart4'));
+  option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        color: '#fff6f6'
+      }
+    }
+  },
+  legend: {
+    textStyle: {fontsize:18, color:'#fff6f6'},
+    data: ['业务-AUM' , '增速']
+  },
+  xAxis: [
+    {
+      type: 'category',
+      data: ['2016', '2017', '2018', '2019', '2020'],
+      axisPointer: {
+        type: 'shadow'
+      },
+      axisLabel:{
+        textStyle: {fontsize:18, color:'#fff6f6'}
+      }
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      name: '业务-AUM',
+      min: 60,
+      max: 100,
+      interval: 10,
+      axisLabel: {
+        textStyle: {fontsize:18, color:'#fff6f6'},
+        formatter: '￥{value}万'
+      }
+    },
+    {
+      type: 'value',
+      name: '增速',
+      min: 0,
+      max: 20,
+      interval: 2,
+      axisLabel: {
+        textStyle: {fontsize:5, color:'#fff6f6'},
+        formatter: '{value}%'
+      }
+    }
+  ],
+  series: [
+    {
+      name: '业务-AUM',
+      color: '#ff8302',
+      type: 'bar',
+      data: [68.21,74.14,82.38,84.93,89.40]
+        // data: {{form.echart4_1.xAxis | safe}}
+    },
+    {
+      name: '增速',
+      color: '#F6E331',
+      type: 'line',
+      yAxisIndex: 1,
+      data: [0, 8.7,11.11,3.09,5.26]
+      //   data: {{form.echart4_2.xAxis | safe}}
+    }
+  ]
+};
+  myChart4.setOption(option);
+});
+    </script>

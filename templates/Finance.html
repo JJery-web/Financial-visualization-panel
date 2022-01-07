@@ -1,0 +1,250 @@
+{% extends "Index.html" %}
+
+{% block nav %}
+    <nav>
+        <ul>
+            <li class="_left"><a  href={{ url_for('index') }}>主要指标</a></li>
+            <li class="nav_active _left"><a  href={{ url_for("finance") }}>财务情况</a></li>
+
+        </ul>
+        <ul><li class="index_middle"><h1 style="font-size:24px;text-align:right">2021年SWIFT银行财务数据可视化</h1></li></ul>
+        <ul>
+            <li class="_right"><a href={{ url_for("predict") }}>预测分析</a></li>
+            <li class=" _right"><a href={{ url_for("business") }}>业务情况</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block subnav %}
+<div class="subnav_wrapper">
+    <ul class="subnav">
+<!--        <li class="subnav subnav_item">资产总额</li>-->
+        <li class="subnav subnav_item">资产总额</li>
+        <li class="subnav subnav_item">营业收入</li>
+        <li class="subnav subnav_item">净利润</li>
+        <li class="subnav subnav_item">流动性</li>
+    </ul>
+</div>
+
+{% endblock %}
+{% block main %}
+<!--<style>-->
+<!--       #-->
+<!--</style>-->
+ <div class="mainbox div1">
+     <div class="map1">
+          <div class="asset_1" id="asset_1"></div>
+    </div>
+
+     <div class="column">
+             <div class="panel_small">
+                 <div class="no">
+                    <div class="no-top">
+                        <ul>
+                            <li>7,866,136</li>
+                            <li>6.71%</li>
+                        </ul>
+                    </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>当期总资产(百万)</li>
+                        <li>近5年年均增长率</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                <div class="no-top">
+                    <ul>
+                        <li>7,800,100</li>
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>预测总资产(百万)</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                  <div class="no-top">
+                    <ul>
+                        <li>6.63%</li>
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>预测增长率</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+             <div class="panel_big">
+                <div class="charttitle">资产组合情况</div>
+                <div class="chart_big" id="asset_2"></div>
+                <div class="panelfoot"></div>
+                <div class="panelfoot"></div>
+            </div>
+        </div>
+ </div>
+
+<div class="mainbox div2">
+     <div class="map1">
+          <div class="asset_1" id="asset_3"></div>
+    </div>
+
+     <div class="column">
+             <div class="panel_small">
+                 <div class="no">
+                    <div class="no-top">
+                        <ul>
+                            <li>267,789</li>
+                            <li>5.30%</li>
+                        </ul>
+                    </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>当期营收(百万)</li>
+                        <li>近5年年均增长率</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                <div class="no-top">
+                    <ul>
+                        <li>285,543</li>
+
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>预测值(百万)</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                  <div class="no-top">
+                    <ul>
+                        <li>6.63%</li>
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+
+                        <li>预测增长率</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+             <div class="panel_big">
+                <div class="charttitle">营收来源</div>
+                <div class="chart_big" id="asset_4"></div>
+                <div class="panelfoot"></div>
+                <div class="panelfoot"></div>
+            </div>
+        </div>
+ </div>
+    <div class="mainbox div3">
+     <div class="map1">
+          <div class="asset_1" id="asset_5"></div>
+    </div>
+
+     <div class="column">
+             <div class="panel_small">
+                 <div class="no">
+                    <div class="no-top">
+                        <ul>
+                            <li>88,674</li>
+                            <li>7.53%</li>
+                        </ul>
+                    </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>当前净利润(百万)</li>
+                        <li>近5年年均增长率</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                <div class="no-top">
+                    <ul>
+                        <li>33.11%</li>
+
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>当期净利率</li>
+                    </ul>
+                </div>
+            </div>
+                 <div class="no">
+                  <div class="no-top">
+                    <ul>
+                        <li>32.50%</li>
+                    </ul>
+                </div>
+                <div class="no-btm">
+                    <ul>
+
+                        <li>预测净利率</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+             <div class="panel_big">
+                <div class="charttitle">利润来源</div>
+                <div class="chart_big" id="asset_6"></div>
+                <div class="panelfoot"></div>
+                <div class="panelfoot"></div>
+            </div>
+        </div>
+ </div>
+    <div class="mainbox div4">
+     <div class="map1">
+          <div class="asset_1" id="asset_7"></div>
+    </div>
+
+     <div class="column">
+             <div class="panel_small_small">
+                 <div class="no">
+                    <div class="no-top">
+                        <ul>
+                            <li>0.83</li>
+                            <li_red>1.21 ↑</li_red>
+                        </ul>
+                    </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>当期存贷比率</li>
+                        <li>当期不良率</li>
+                    </ul>
+                </div>
+            </div>
+                  <div class="no">
+                    <div class="no-top">
+                        <ul>
+                            <li>0.85</li>
+                            <li>1.10</li>
+                        </ul>
+                    </div>
+                <div class="no-btm">
+                    <ul>
+                        <li>存贷比率警戒值</li>
+                        <li>不良率警戒值</li>
+                    </ul>
+                </div>
+            </div>
+
+            </div>
+             <div class="panel_big_big">
+                <div class="charttitle">贷款等级情况</div>
+                <div class="chart_biggest" id="asset_8"></div>
+                <div class="panelfoot"></div>
+                <div class="panelfoot"></div>
+            </div>
+        </div>
+ </div>
+<script type="text/javascript" src="../static/js/Charts_asset_sum.js"></script>
+<script type="text/javascript" src="../static/js/scroll.js"></script>
+{% endblock %}
+
+
