@@ -1,0 +1,152 @@
+<div class="panel">
+<div class="charttitle">银行行业地位</div>
+<div class="chart" id="echart1"></div>
+<div class="panelfoot"></div>
+</div>
+<div class="panel">
+    <div class="charttitle">银行核心能力</div>
+    <div class="chart" id="echart2"></div>
+    <div class="panelfoot"></div>
+</div>
+
+
+<script>
+    $(function echart1(){
+        var myChart1 = echarts.init(document.getElementById('echart1'));
+        option = {
+          color: ['#ff8302','#fffb6c'],
+            legend: {
+              data: ["{{ form1.title1 }}","{{ form1.title2 }}"],
+            textStyle:{color:'#fff'}
+        },
+            radar: {
+            center: ['50%', '50%'],
+            radius: 80,
+            // shape: 'circle',
+            indicator: [
+              { name: 'AUM', max: 1 },
+              { name: '信用卡', max: 1 },
+              { name: '存款', max: 1 },
+              { name: '客户', max: 1 },
+              { name: '营收', max: 1},
+              // { name: 'Marketing', max: 25000 }
+            ],
+              name: { // (圆外的标签)雷达图每个指示器名称的配置项。
+                formatter: '{value}',
+                  textStyle: {fontSize: 15, color: '#fff6f6'}
+              },
+          },
+            animationDuration: 2000,
+            series: [
+              {
+                  name: '银行行业地位',
+                  type: 'radar',
+                  data: [
+                      {value: {{form1.xAxis1 | safe}},
+                          name: "{{ form1.title1 | safe }}",
+                          areaStyle: {// 选择区域颜色
+                    normal: {color: 'rgba(255,172,17,0.8)' }},
+                  },
+                      {
+                          value: {{form1.xAxis2 | safe}},
+                          name:"{{ form1.title2|safe }}",
+                          areaStyle: {// 选择区域颜色
+                              normal: {color: 'rgba(255,235,100,0.3)'}
+                          }
+                      }
+                  ]
+              }],
+            /*lineStyle: {
+              normal: {
+                  color: '#ff8302',
+                  width: 6,
+                  shadowColor: 'rgba(255,251,108,0.9)',
+                  shadowBlur: 50,
+                  shadowOffsetY: 15
+              }
+            }, */
+            emphasis: { // 高亮时的样式
+                lineStyle: {
+                    width: 5
+                },
+                opacity: 1},
+            itemStyle:{borderWidth:3},
+        };
+
+        myChart1.setOption(option);
+});
+    </script>
+
+<script>
+    $(function echart2(){
+        var myChart2 = echarts.init(document.getElementById('echart2'));
+        option = {
+          color: ['#ff8302','#fffb6c'],
+            legend: {
+             data: ['{{ form2.title1 }}','{{ form2.title2 }}'],
+             textStyle: {fontsize:18, color:'#fff6f6'}
+           },
+            grid:{ top:'1%'},
+            radar: {
+            center: ['50%', '50%'],
+            radius: 80,
+            // shape: 'circle',
+            indicator: [
+              { name: '流动性效益', max: 1 },
+              { name: '盈利效率', max: 1 },
+              { name: '负债规模', max: 1 },
+              { name: '资产规模', max: 1 },
+              { name: '风险', max: 1},
+              // { name: 'Marketing', max: 25000 }
+            ],
+             name: { // (圆外的标签)雷达图每个指示器名称的配置项。
+            formatter: '{value}',
+            textStyle: {
+                fontSize: 15,
+                color: '#fff6f6'
+            }
+        },
+          },
+            animationDuration: 2000,
+        series: [
+              {
+                  name: '银行核心能力',
+                  type: 'radar',
+                  data: [
+                      {value: {{form2.xAxis1 | safe}},
+                          name: "{{ form2.title1 | safe }}",
+                          areaStyle: {// 选择区域颜色
+                    normal: {color: 'rgba(255,172,17,0.8)' }},
+                  },
+                      {
+                          value: {{form2.xAxis2 | safe}},
+                          name:"{{ form2.title2|safe }}",
+                          areaStyle: {// 选择区域颜色
+                              normal: {color: 'rgba(77,207,231,0.4)'}
+                          }
+                      }
+                  ]
+              }],
+          lineStyle: {
+       normal: {
+        color: '#ff8302',
+        width: 6,
+        shadowColor: 'rgba(255,251,108,0.9)',
+        shadowBlur: 50,
+        shadowOffsetY: 15
+      }
+      },
+          emphasis: { // 高亮时的样式
+                lineStyle: {
+                    width: 5
+                },
+                opacity: 1
+     },
+      itemStyle:{
+      borderWidth:3
+    },
+        };
+
+        myChart2.setOption(option);
+});
+    </script>
